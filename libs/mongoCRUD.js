@@ -42,10 +42,10 @@ module.exports = function(app, name) {
 
         if(req.params.id)
             spec._id = req.params.id;
-        if(req.params.limit)
-            options.limit = parseInt(req.params.limit);
-        if(req.params.skip)
-            options.skip = parseInt(req.params.skip);
+        if(req.query.limit)
+            options.limit = parseInt(req.query.limit);
+        if(req.query.skip)
+            options.skip = parseInt(req.query.skip);
 
         listCommand(
             {
@@ -87,6 +87,13 @@ module.exports = function(app, name) {
         // JSON decode query or spec
 		var spec = req.query.spec? JSON.parse(req.query.spec) : spec;
         var options = req.query.options? JSON.parse(req.query.options) : {};
+
+        if(req.params.id)
+            spec._id = req.params.id;
+        if(req.query.limit)
+            options.limit = parseInt(req.query.limit);
+        if(req.query.skip)
+            options.skip = parseInt(req.query.skip);
         
         deleteCommand(
             {
@@ -116,7 +123,13 @@ module.exports = function(app, name) {
         else
             options.set = true;
 
-        options.augment = augment("update");
+        if(req.query.limit)
+            options.limit = parseInt(req.query.limit);
+        if(req.query.skip)
+            options.skip = parseInt(req.query.skip);
+    
+        if(options.set)
+            options.augment = augment("update");
 
 		updateCommand(
             {
