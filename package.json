@@ -1,0 +1,11 @@
+{
+    "name": "EDE-backend",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "2.4.6",
+        "jade": ">= 0.0.1",
+        "mognodb-rest": "http://github.com/ActiveUnits/mongodb-rest/tarball/master",
+        "optimist": "latest"
+    }
+}
