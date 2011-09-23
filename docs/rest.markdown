@@ -1,14 +1,24 @@
-# examples #
-    GET http://<endpoint>/<objectName>?limit=10&skip=2
-    GET http://<endpoint>/<objectName>/<objectId>?deep=true
-    POST http://<endpoint>/<objectName> data: "{....}"
-    PUT http://<endpoint>/<objectName>/<objectId> data: "{...}"
-    DELETE http://<endpoint>/<objectName>/<objectId>
+# helper methods #
+## add TeamMember to Team ##
+    PUT <endpoint>/Team/<Team._id>/member
+    BODY { memberId: "" }
 
-# usage notes #
+## add Achievement to Team ##
+    PUT <endpoint>/Team/<Team._id>/achievement
+    BODY { achievementId: "" }
+
+## add/update Skill to TeamMember ##
+    PUT <endpoint>/TeamMember/<TeamMember._id>/skill
+    BODY { skillId: "", level: <number> }
+
+## add Achievement to TeamMember ##
+    PUT <endpoint>/TeamMember/<TeamMember._id>/achievement
+    BODY { achievementId: "" }
+
+# generic CRUD members #
 
 ## request template ##
-    GET|POST|PUT|DELETE <url>?token=<md5(passphrase)>
+    GET|POST|PUT|DELETE <url>
 
 ## response template when status code != 200 ##
     {
@@ -31,13 +41,13 @@
     data={_id:"", field:value}
 
 ## update ##
-    PUT <endpoint>/<objectName>/<Object.id>
+    PUT <endpoint>/<objectName>/<Object._id>
     BODY<(partial) object>
 ### response ###
     data=<updated fields from object>
 
 ## delete ##
-    DELETE <ednpoint>/<objectName>/<Object.id>
+    DELETE <ednpoint>/<objectName>/<Object._id>
 ### response ###
     data={field: value}
 
@@ -53,3 +63,11 @@
 
 ### response ###
     data=[<Object>, <Object>, ... ]
+
+# examples #
+    GET http://<endpoint>/<objectName>?limit=10&skip=2
+    GET http://<endpoint>/<objectName>/<objectId>?deep=true
+    GET http://<endpoint>/<objectName>/<objectId>?spec="{...}"&limit=<number>&skip=<number>
+    POST http://<endpoint>/<objectName> data: "{....}"
+    PUT http://<endpoint>/<objectName>/<objectId> data: "{...}"
+    DELETE http://<endpoint>/<objectName>/<objectId>

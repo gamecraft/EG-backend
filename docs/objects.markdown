@@ -18,7 +18,7 @@
         name : "",
         description : "",
         toMasterSkill: "", // the name of the MasterSkill to which they apply
-        teamPointsReward : "", // the number of team points that is rewarded for the given achievment
+        pointsReward : "", // the number of team points that is rewarded for the given achievment
         image : "" // the path to the image,
         createdAt: "2011-09-18T22:26:09.506Z",
         updatedAt: "2011-09-18T22:26:09.506Z"
