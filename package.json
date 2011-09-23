@@ -6,6 +6,7 @@
         "express": "2.4.6",
         "jade": ">= 0.0.1",
         "mognodb-rest": "http://github.com/ActiveUnits/mongodb-rest/tarball/master",
-        "optimist": "latest"
+        "optimist": "latest",
+        "now": "latest"
     }
 }
