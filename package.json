@@ -7,6 +7,8 @@
         "jade": ">= 0.0.1",
         "mognodb-rest": "http://github.com/ActiveUnits/mongodb-rest/tarball/master",
         "optimist": "latest",
-        "now": "latest"
+        "now": "latest",
+        "mongodm": "http://github.com/ActiveUnits/mongodm/tarball/master",
+        "api-easy": "https://github.com/ActiveUnits/api-easy/tarball/master"
     }
 }
