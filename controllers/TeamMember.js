@@ -20,6 +20,9 @@ exports.registerRoutes = function(app) {
                 } else {
                     db.withDocument("Skill")
                         .findOne(skillPattern, function(err, skill){
+                            if(typeof member.skills == "undefined")
+                                member.skills = [];
+
                             var found = false;
                             for(var i in member.skills)
                                 if(member.skills[i].skillId == req.body.skillId)

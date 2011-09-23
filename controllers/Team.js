@@ -20,6 +20,9 @@ exports.registerRoutes = function(app) {
                 } else {
                     db.withDocument("TeamMember")
                         .findOne(memberPattern, function(err, member){
+                            if(typeof team.members == "undefined")
+                                team.members = [];
+
                             var found = false;
                             for(var i in team.members)
                                 if(team.members[i].memberId == req.body.memberId)
