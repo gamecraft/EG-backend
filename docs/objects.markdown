@@ -36,6 +36,12 @@
             },
             ...
         ],
+        achievements: [
+            {
+                achievementId: ""
+            },
+            ...
+        ]
         members: [
             {
                 memberId: ""
@@ -56,6 +62,12 @@
             {
                 skillId: "",
                 level: <number>
+            },
+            ...
+        ],
+        achievements: [
+            {
+                achievementId: ""
             },
             ...
         ],
