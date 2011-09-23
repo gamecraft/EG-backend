@@ -1,12 +1,13 @@
 exports.registerRoutes = function(app) {
     // add member to team
     app.put("/Team/:id/member", function(req, res, next) {
-        
+        var teamPattern = null;
         if(/^[0-9a-fA-F]{24}$/.test(req.params.id))
             teamPattern = {_id: db.toMongoID(req.params.id)};
         else
             teamPattern = {_id: req.params.id};
 
+        var memberPattern = null;
         if(/^[0-9a-fA-F]{24}$/.test(req.body.memberId))
             memberPattern = {_id: db.toMongoID(req.body.memberId)};
         else
@@ -15,7 +16,7 @@ exports.registerRoutes = function(app) {
         db.withDocument("Team")
             .findOne(teamPattern, function(err, team){
                 if(team == null) {
-                    res.send({success: false, msg: "team not found"}, 404);
+                    res.send({success: false, msg: "team not found "+req.params.id}, 404);
                 } else {
                     db.withDocument("TeamMember")
                         .findOne(memberPattern, function(err, member){

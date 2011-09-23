@@ -49,13 +49,17 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-var boot = function(){
+var boot = function(dbFacade){
+    db = dbFacade;
+
     db.defineDocument(require("./models/Team"));
     db.defineDocument(require("./models/TeamMember"));
+    db.defineDocument(require("./models/Skill"));
 
     console.log("Connected to MongoDB "+app.set("dbname"));
 
     // Routes
+    require("./controllers/TeamMember").registerRoutes(app);
     require("./controllers/Team").registerRoutes(app);
     var mongoCRUD = require("./libs/mongoCRUD");
     mongoCRUD(app, "Skill");
@@ -63,7 +67,7 @@ var boot = function(){
     mongoCRUD(app, "TeamMember");
     mongoCRUD(app, "Page");
     mongoCRUD(app, "Phase");
-    mongoCRUD(app, "Achievment");
+    mongoCRUD(app, "Achievement");
 
     app.listen(3000);
     console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
@@ -77,16 +81,15 @@ mongodm.withDatabase(app.set("dbname"), function(err, dbFacade){
         console.log(err);
         return;
     }
-    db = dbFacade;
-
     if(app.set("dbname") == "EDE-test") {
-        db.drop(function(){
-            console.log("cleaned "+app.set('dbname'));
-            mongodm.withDatabase(app.set("dbname"), function(err, dbFacadeCleaned) {
-                db = dbFacadeCleaned;
-                boot();
-            });
+        dbFacade.drop(function(){
+            console.log("Cleaned "+app.set('dbname'));
+            setTimeout(function(){ 
+                mongodm.withDatabase(app.set("dbname"), function(err, dbFacadeCleaned) {
+                    boot(dbFacadeCleaned);
+                });
+            }, 1000);
         });
     } else
-        boot();
+        boot(dbFacade);
 });
