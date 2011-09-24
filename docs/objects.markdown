@@ -83,7 +83,13 @@
         orderIndex: <number from 0 to X>,
         createdAt: "2011-09-18T22:26:09.506Z",
         updatedAt: "2011-09-18T22:26:09.506Z",
-        teamScore : [] // array where at i-th index is the score for the (i+1)-th team for the phase
+        teamScore : [
+            {
+                teamId: "",
+                points: <number>
+            },
+            ...
+        ] 
     }
 
 
