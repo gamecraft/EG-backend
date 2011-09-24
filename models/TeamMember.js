@@ -2,13 +2,13 @@ module.exports = {
     name: "TeamMember",
     instance: {
         fields: {
-            name: null,
+            name: "",
             points: 0,
-            teamId: null,
+            teamId: "",
             skills: [],
             achievements: [],
-            createdAt: null,
-            updatedAt: null
+            createdAt: (new Date()),
+            updatedAt: (new Date())
         },
         on: {
             save: function() {

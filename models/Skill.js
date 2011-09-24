@@ -7,8 +7,8 @@ module.exports = {
             description : "", 
             level: 0, // the current level. Skill points for buying are equal ot it.
             image : "", // the path to the image
-            createdAt: null,
-            updatedAt: null
+            createdAt: (new Date()),
+            updatedAt: (new Date())
         },
         on: {
             save: function() {

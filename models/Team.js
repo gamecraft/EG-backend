@@ -7,8 +7,8 @@ module.exports = {
             skills: [],
             achievements: [],
             members: [],
-            createdAt: null,
-            updatedAt: null
+            createdAt: (new Date()),
+            updatedAt: (new Date())
         },
         on: {
             save: function() {

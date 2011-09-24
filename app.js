@@ -53,13 +53,19 @@ app.configure(function(){
 // Routes
 require("./controllers/TeamMember").registerRoutes(app);
 require("./controllers/Team").registerRoutes(app);
+
 var mongoCRUD = require("./libs/mongoCRUD");
-mongoCRUD(app, "Skill");
-mongoCRUD(app, "Team");
-mongoCRUD(app, "TeamMember");
-mongoCRUD(app, "Page");
-mongoCRUD(app, "Phase");
-mongoCRUD(app, "Achievement");
+
+var onUpdate = function(data, next) {
+    data.updatedAt = new Date();
+    next();
+};
+
+mongoCRUD(app, "Skill", mongo.createDefaults("Skill"), onUpdate);
+mongoCRUD(app, "Team", mongo.createDefaults("Team"), onUpdate);
+mongoCRUD(app, "TeamMember", mongo.createDefaults("TeamMember"), onUpdate);
+mongoCRUD(app, "Phase", mongo.createDefaults("Phase"), onUpdate);
+mongoCRUD(app, "Achievement", mongo.createDefaults("Achievement"), onUpdate);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

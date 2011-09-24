@@ -51,7 +51,7 @@ exports.registerRoutes = function(app) {
                                 member.skills[found].level = level;
                             
                             member.save(function(){
-                                if(member.teamId != null)
+                                if(member.teamId != "")
                                     teamCtrl.setSkill(req, member.teamId, skill, function(){
                                         res.send({success: true, data: member});
                                     });
@@ -93,7 +93,7 @@ exports.registerRoutes = function(app) {
                             member.achievements.push({ achievementId: achievement._id.toString() });
                             
                             member.save(function(){
-                                if(member.teamId != null)
+                                if(member.teamId != "")
                                     teamCtrl.setAchievement(req, member.teamId, achievement, function(){
                                         res.send({success: true, data: member});
                                     });
@@ -115,7 +115,7 @@ exports.registerRoutes = function(app) {
                 } else {
                     member.points += req.body.points;
                     member.save(function(){
-                        if(member.teamId != null)
+                        if(member.teamId != "")
                             teamCtrl.addPoints(req, member.teamId, req.body.points, function() {
                                res.send({success: true, data: member}); 
                             });

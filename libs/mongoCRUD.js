@@ -3,21 +3,7 @@ var createCommand = require("mongodb-rest2/commands/create");
 var updateCommand = require("mongodb-rest2/commands/update");
 var deleteCommand = require("mongodb-rest2/commands/delete");
 
-var augment = function(command) {
-    if(command == "create")
-        return function(data, next) {
-            data.createdAt = new Date();
-            data.updatedAt = new Date();
-            next();
-        };
-    if(command == "update")
-        return function(data, next) {
-            data.updatedAt = new Date();
-            next();
-        }
-};
-
-module.exports = function(app, name) {
+module.exports = function(app, name, onCreate, onUpdate) {
 
     var renderResponse = function(res, err, data, allCount) {
 	  	res.header('Content-Type', 'application/json');
@@ -62,7 +48,7 @@ module.exports = function(app, name) {
 
     app.post("/"+name, function(req,res,next) {
         var options = {};
-        options.augment = augment("create");
+        options.augment = onCreate;
 
         createCommand( 
             {
@@ -129,7 +115,7 @@ module.exports = function(app, name) {
             options.skip = parseInt(req.query.skip);
     
         if(options.set)
-            options.augment = augment("update");
+            options.augment = onUpdate;
 
 		updateCommand(
             {
@@ -148,6 +134,3 @@ module.exports = function(app, name) {
             });
     });
 };
-
-// expose augment function for other modules
-module.exports.augment = augment;

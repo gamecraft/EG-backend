@@ -1,5 +1,15 @@
 var mongodm = require("mongodm");
 
+exports.createDefaults = function(name) {
+    var model = require("../models/"+name).instance.fields;
+    return function(data, next) {
+        for(var i in model)
+            if(typeof data[i] == "undefined")
+                data[i] = model[i];
+        next();
+    }
+}
+
 exports.connect = function(app){
     var db = null;
     mongodm.withDatabase(app.set("dbname"), function(err, dbFacade){
