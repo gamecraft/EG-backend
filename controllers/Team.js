@@ -84,24 +84,26 @@ exports.registerRoutes = function(app) {
                 } else {
                     req.db.withDocument("TeamMember")
                         .findOne(memberPattern, function(err, member){
+                            if(member == null) {
+                                res.send({success: false, msg: "member not found "+req.body.memberId}, 404);
+                                return;
+                            }
+
                             if(typeof team.members == "undefined")
                                 team.members = [];
 
-                            var found = false;
                             for(var i in team.members)
-                                if(team.members[i].memberId == req.body.memberId)
-                                    found = true;
-                            if(!found)
-                                team.members.push({memberId: req.body.memberId});
-                            member.teamId = req.params.id;
-                            member.save(function(){
-                                if(!found)
-                                    team.save(function(){
-                                        res.send({success: true, data: { team: team, member: member }});
-                                    });
-                                else {
-                                    res.send({success: true, data: { team: team, member: member }});
+                                if(team.members[i].memberId == req.body.memberId) {
+                                    res.send({success: false, msg: "member "+req.body.memberId+" already added to team"});
+                                    return;
                                 }
+
+                            team.members.push({memberId: req.body.memberId});
+                            team.save(function(){
+                                member.teamId = req.params.id;
+                                member.save(function(){
+                                    res.send({success: true, data: { team: team, member: member }});
+                                });
                             });
                         });
                 }
