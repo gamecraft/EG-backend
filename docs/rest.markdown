@@ -7,7 +7,7 @@ appending TeamMemeber to Team.members collection
     BODY { memberId: "" }
 
 ## add Achievement to Team ##
-Simply appends Achievement to Team.achievements
+Simply appends Achievement to Team.achievements, will also add Achievement.rewardPoints to Team.totalPoints
 
     PUT <endpoint>/Team/<Team._id>/achievement
     BODY { achievementId: "" }
@@ -20,7 +20,8 @@ appends or updates the Team.skills collection by calculating its avgLevel per Te
     BODY { skillId: "", level: <number> }
 
 ## add Achievement to TeamMember ##
-Appends Achievement to TeamMember as well as appends it to the Team of the member.
+Appends Achievement to TeamMember as well as appends it to the Team of the member. 
+Will also add Achievement.rewardPoints to TeamMember.points and Team.totalPoints.
 
     PUT <endpoint>/TeamMember/<TeamMember._id>/achievement
     BODY { achievementId: "" }
