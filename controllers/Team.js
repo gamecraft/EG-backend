@@ -1,3 +1,4 @@
+var mongo = require("../libs/mongoExpressConnect");
 var getObjectID = function(db, value){
     if(/^[0-9a-fA-F]{24}$/.test(value))
         return db.toMongoID(value);
@@ -73,7 +74,7 @@ exports.addPoints = function(req, teamId, value, next) {
 exports.registerRoutes = function(app) {
     
     // add member to team
-    app.put("/Team/:id/member", function(req, res, next) {
+    app.put("/Team/:id/member",  function(req, res, next) {
         var teamPattern = {_id: getObjectID(req.db, req.params.id)};        
         var memberPattern = {_id: getObjectID(req.db, req.body.memberId)};
 
@@ -89,21 +90,9 @@ exports.registerRoutes = function(app) {
                                 return;
                             }
 
-                            if(typeof team.members == "undefined")
-                                team.members = [];
-
-                            for(var i in team.members)
-                                if(team.members[i].memberId == req.body.memberId) {
-                                    res.send({success: false, msg: "member "+req.body.memberId+" already added to team"});
-                                    return;
-                                }
-
-                            team.members.push({memberId: req.body.memberId});
-                            team.save(function(){
-                                member.teamId = req.params.id;
-                                member.save(function(){
-                                    res.send({success: true, data: { team: team, member: member }});
-                                });
+                            member.teamId = req.params.id;
+                            member.save(function(){
+                                res.send({success: true, data: { team: team, member: member }});
                             });
                         });
                 }

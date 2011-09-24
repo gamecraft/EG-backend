@@ -17,6 +17,5 @@ suite.discuss('When adding member to team')
         .expect('should respond with proper response', function(req, res, body) {
             var response = JSON.parse(body);
             assert.equal(response.data.member.teamId, "teamID");
-            assert.equal(response.data.team.members[0].memberId, "memberID");
         }).next()
 .export(module);

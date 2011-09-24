@@ -41,12 +41,6 @@
                 achievementId: ""
             },
             ...
-        ]
-        members: [
-            {
-                memberId: ""
-            },
-            ...
         ],
         createdAt: "2011-09-18T22:26:09.506Z",
         updatedAt: "2011-09-18T22:26:09.506Z"

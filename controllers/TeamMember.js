@@ -1,3 +1,4 @@
+var mongo = require("../libs/mongoExpressConnect");
 var teamCtrl = require("./Team");
 
 var getObjectID = function(db, value){
@@ -18,7 +19,6 @@ exports.registerRoutes = function(app) {
             .findOne(memberPattern, function(err, member){
                 if(member == null) {
                     res.send({success: false, msg: "member not found "+req.params.id}, 404);
-                    console.log("member not found "+req.params.id);
                 } else {
                     req.db.withDocument("Skill")
                         .findOne(skillPattern, function(err, skill){
@@ -73,7 +73,6 @@ exports.registerRoutes = function(app) {
             .findOne(memberPattern, function(err, member){
                 if(member == null) {
                     res.send({success: false, msg: "member not found "+req.params.id}, 404);
-                    console.log("member not found "+req.params.id);
                 } else {
                     req.db.withDocument("Achievement")
                         .findOne(achievementPattern, function(err, achievement){
