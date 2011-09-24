@@ -36,7 +36,7 @@ exports.setSkill = function(req, teamId, skill, next) {
             }
             
             if(found == -1) {
-                team.skills.push({skillId: skill._id.toString(), totalLevel: skill.level});
+                team.skills.push({skillId: skill._id.toString(), totalLevel: parseInt(skill.level)});
                 team.save(next);
             }
             else
