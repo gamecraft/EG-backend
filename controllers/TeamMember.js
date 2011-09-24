@@ -1,6 +1,6 @@
 var teamCtrl = require("./Team");
 
-var getObjectID = function(value){
+var getObjectID = function(db, value){
     if(/^[0-9a-fA-F]{24}$/.test(value))
         return db.toMongoID(value);
     else
@@ -11,8 +11,8 @@ exports.registerRoutes = function(app) {
     
     // add/update skill to member
     app.put("/TeamMember/:id/skill", function(req, res, next) {
-        var memberPattern = {_id: getObjectID(req.params.id)};
-        var skillPattern = {_id: getObjectID(req.body.skillId)};
+        var memberPattern = {_id: getObjectID(req.db, req.params.id)};
+        var skillPattern = {_id: getObjectID(req.db, req.body.skillId)};
 
         req.db.withDocument("TeamMember")
             .findOne(memberPattern, function(err, member){
@@ -66,8 +66,8 @@ exports.registerRoutes = function(app) {
 
     // add/update skill to member
     app.put("/TeamMember/:id/achievement", function(req, res, next) {
-       var memberPattern = {_id: getObjectID(req.params.id)};
-       var achievementPattern = {_id: getObjectID(req.body.achievementId)};
+       var memberPattern = {_id: getObjectID(req.db, req.params.id)};
+       var achievementPattern = {_id: getObjectID(req.db, req.body.achievementId)};
 
         req.db.withDocument("TeamMember")
             .findOne(memberPattern, function(err, member){
@@ -102,6 +102,26 @@ exports.registerRoutes = function(app) {
                                 }
                             });
                         });
+                }
+            });
+    });
+
+    app.put("/TeamMember/:id/points", function(req, res, next) {
+        var memberPattern = {_id: getObjectID(req.db, req.params.id)};
+        req.db.withDocument("TeamMember")
+            .findOne(memberPattern, function(err, member){
+                if(member == null) {
+                    res.send({success: false, msg: "member not found "+req.params.id}, 404);
+                } else {
+                    member.points += req.body.points;
+                    member.save(function(){
+                        if(member.teamId != null)
+                            teamCtrl.addPoints(req, member.teamId, req.body.points, function() {
+                               res.send({success: true, data: member}); 
+                            });
+                        else
+                            res.send({success: true, data: member});
+                    });
                 }
             });
     });

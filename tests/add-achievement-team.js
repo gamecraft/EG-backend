@@ -3,7 +3,7 @@ var APIeasy = require('api-easy'),
 
 var suite = APIeasy.describe('localhost:3000/Team');
 
-suite.discuss('When adding achievement to member')
+suite.discuss('When adding achievement to team')
     .use('localhost', 3000)
     .setHeader('Content-Type', 'application/json')
     .del("/Team").expect(200).next()

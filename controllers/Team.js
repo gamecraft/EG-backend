@@ -1,4 +1,4 @@
-var getObjectID = function(value){
+var getObjectID = function(db, value){
     if(/^[0-9a-fA-F]{24}$/.test(value))
         return db.toMongoID(value);
     else
@@ -7,7 +7,7 @@ var getObjectID = function(value){
 
 exports.updateTotalLevel = function(req, team, skill, next) {
     req.db.withCollection("TeamMember")
-        .find({teamId: getObjectID(team._id), }, function(err, members) {
+        .find({teamId: getObjectID(req.db, team._id), }, function(err, members) {
 
             var totalLevel = 0;
             for(var i in members)
@@ -25,7 +25,7 @@ exports.updateTotalLevel = function(req, team, skill, next) {
 
 exports.setSkill = function(req, teamId, skill, next) {
     req.db.withDocument("Team")
-        .findOne({_id: getObjectID(teamId)}, function(err, team) {
+        .findOne({_id: getObjectID(req.db, teamId)}, function(err, team) {
             if(typeof team.skills == "undefined")
                 team.skills = [];
             var found = -1;
@@ -45,7 +45,7 @@ exports.setSkill = function(req, teamId, skill, next) {
 
 exports.setAchievement = function(req, teamId, achievement, next) {
     req.db.withDocument("Team")
-        .findOne({_id: getObjectID(teamId)}, function(err, team) {
+        .findOne({_id: getObjectID(req.db, teamId)}, function(err, team) {
             if(typeof team.achievements == "undefined")
                 team.achievements = [];
             var found = -1;
@@ -62,12 +62,20 @@ exports.setAchievement = function(req, teamId, achievement, next) {
         });
 };
 
+exports.addPoints = function(req, teamId, value, next) {
+    req.db.withDocument("Team")
+        .findOne({_id: getObjectID(req.db, teamId)}, function(err, team) {
+            team.totalPoints += value;
+            team.save(next);
+        });
+}
+
 exports.registerRoutes = function(app) {
     
     // add member to team
     app.put("/Team/:id/member", function(req, res, next) {
-        var teamPattern = {_id: getObjectID(req.params.id)};        
-        var memberPattern = {_id: getObjectID(req.body.memberId)};
+        var teamPattern = {_id: getObjectID(req.db, req.params.id)};        
+        var memberPattern = {_id: getObjectID(req.db, req.body.memberId)};
 
         req.db.withDocument("Team")
             .findOne(teamPattern, function(err, team){
@@ -102,8 +110,8 @@ exports.registerRoutes = function(app) {
 
     // add achievement to team
     app.put("/Team/:id/achievement", function(req, res, next) {
-        var teamPattern = {_id: getObjectID(req.params.id)};        
-        var achievementPattern = {_id: getObjectID(req.body.achievementId)};
+        var teamPattern = {_id: getObjectID(req.db, req.params.id)};        
+        var achievementPattern = {_id: getObjectID(req.db, req.body.achievementId)};
 
         req.db.withDocument("Team")
             .findOne(teamPattern, function(err, team){
@@ -131,6 +139,21 @@ exports.registerRoutes = function(app) {
                                 res.send({success: true, data: team });
                             });
                         });
+                }
+            });
+    });
+
+    app.put("/Team/:id/points", function(req, res, next) {
+        var teamPattern = {_id: getObjectID(req.db, req.params.id)};  
+        req.db.withDocument("Team")
+            .findOne(teamPattern, function(err, team){
+                if(team == null) {
+                    res.send({success: false, msg: "team not found "+req.params.id}, 404);
+                } else {
+                    team.totalPoints += req.body.points;
+                    team.save(function(){
+                        res.send({success: true, data: team});
+                    });
                 }
             });
     });
