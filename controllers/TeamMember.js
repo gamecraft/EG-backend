@@ -36,9 +36,9 @@ exports.registerRoutes = function(app) {
 
                             var level = null;
                             if(req.body.level)
-                                level = req.body.level;
+                                level = parseInt(req.body.level);
                             else
-                                level = skill.level;
+                                level = parseInt(skill.level);
 
                             if(level == null || level == undefined) {
                                 res.send({success: false, msg: "skill does not have level "+req.body.skillId}, 400);
