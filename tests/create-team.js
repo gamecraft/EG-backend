@@ -13,8 +13,6 @@ suite.discuss('When creating new team')
             var response = JSON.parse(body);
 
             assert.equal(response.data.totalPoints, 0);
-            assert.isArray(response.data.members);
-            assert.equal(response.data.members.length, 0);
             assert.isArray(response.data.skills);
             assert.equal(response.data.skills.length, 0);
             assert.isArray(response.data.achievements);

@@ -6,7 +6,6 @@ module.exports = {
             totalPoints: 0,
             skills: [],
             achievements: [],
-            members: [],
             createdAt: (new Date()),
             updatedAt: (new Date())
         },
