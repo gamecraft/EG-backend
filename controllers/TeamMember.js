@@ -90,7 +90,7 @@ exports.registerRoutes = function(app) {
                                 }
 
                             member.achievements.push({ achievementId: achievement._id.toString() });
-                            member.points += parseInt(achievement.pointsReward);
+                            member.points += parseInt(achievement.teamPointsReward);
                             
                             member.save(function(){
                                 if(member.teamId != "")

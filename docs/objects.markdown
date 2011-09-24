@@ -6,7 +6,7 @@
         name: "", // the name of the current level of the skill. i.e - Fire Tomato
         parentName : "", // the name of the parent skill. i.e - Pomodoro or NLP
         description : "", 
-        level: <number>, // the current level. Skill points for buying are equal ot it.
+        level: 0, // the current level. Skill points for buying are equal ot it.
         image : "", // the path to the image
         createdAt: "2011-09-18T22:26:09.506Z",
         updatedAt: "2011-09-18T22:26:09.506Z",
@@ -18,7 +18,7 @@
         name : "",
         description : "",
         toMasterSkill: "", // the name of the MasterSkill to which they apply
-        pointsReward : "", // the number of team points that is rewarded for the given achievment
+        teamPointsReward : 0, // the number of team points that is rewarded for the given achievment
         image : "" // the path to the image,
         createdAt: "2011-09-18T22:26:09.506Z",
         updatedAt: "2011-09-18T22:26:09.506Z"
@@ -83,8 +83,8 @@
         _id: "",
         name: "",
         active: false,
-        duration: <number in miliseconds>,
-        orderIndex: <number from 0 to X>,
+        duration: 0,
+        orderIndex: 0,
         createdAt: "2011-09-18T22:26:09.506Z",
         updatedAt: "2011-09-18T22:26:09.506Z",
         teamScore : [

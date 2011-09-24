@@ -57,7 +57,7 @@ exports.setAchievement = function(req, teamId, achievement, next) {
             
             if(found == -1) {
                 team.achievements.push({achievementId: achievement._id.toString()});
-                team.totalPoints += parseInt(achievement.pointsReward);
+                team.totalPoints += parseInt(achievement.teamPointsReward);
                 team.save(next);
             } else
                 next();
@@ -126,7 +126,7 @@ exports.registerRoutes = function(app) {
                                 }
 
                             team.achievements.push({achievementId: req.body.achievementId});
-                            team.totalPoints += parseInt(achievement.pointsReward);
+                            team.totalPoints += parseInt(achievement.teamPointsReward);
 
                             team.save(function(){
                                 res.send({success: true, data: team });
