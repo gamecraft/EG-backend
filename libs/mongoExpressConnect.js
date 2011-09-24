@@ -11,6 +11,7 @@ exports.connect = function(app){
             defineDocument(require("../models/Team")).
             defineDocument(require("../models/TeamMember")).
             defineDocument(require("../models/Skill")).
+            defineDocument(require("../models/Achievement")).
             end(function(){
                 console.log("Connected to MongoDB "+app.set("dbname"));
                 db = dbFacade;
@@ -36,7 +37,7 @@ exports.drop = function(app){
             return;
         }
         dbFacade.drop(function(){
-            console.log("Cleaned "+app.set('dbname'));
+            console.log("Dropped "+app.set('dbname'));
         });
     });
 }

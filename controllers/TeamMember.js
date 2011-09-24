@@ -84,6 +84,12 @@ exports.registerRoutes = function(app) {
                             if(typeof member.achievements == "undefined")
                                 member.achievements = [];
 
+                            for(var i in member.achievements)
+                                if(member.achievements[i].achievementId == req.body.achievementId) {
+                                    res.send({success: false, msg: "achievement already added "+req.body.achievementId}, 400);
+                                    return;
+                                }
+
                             member.achievements.push({ achievementId: achievement._id.toString() });
                             
                             member.save(function(){

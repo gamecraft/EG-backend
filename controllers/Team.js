@@ -5,7 +5,7 @@ var getObjectID = function(value){
         return value;
 }
 
-exports.updateAvgLevel = function(req, team, skill, next) {
+exports.updateTotalLevel = function(req, team, skill, next) {
     req.db.withCollection("TeamMember")
         .find({teamId: getObjectID(team._id), }, function(err, members) {
 
@@ -39,7 +39,7 @@ exports.setSkill = function(req, teamId, skill, next) {
                 team.save(next);
             }
             else
-                exports.updateAvgLevel(req, team, skill, next)
+                exports.updateTotalLevel(req, team, skill, next)
         });
 };
 
@@ -111,22 +111,24 @@ exports.registerRoutes = function(app) {
                     res.send({success: false, msg: "team not found "+req.params.id}, 404);
                 } else {
                     req.db.withDocument("Achievement")
-                        .findOne(achievementPattern, function(err, member){
+                        .findOne(achievementPattern, function(err, achievement){
+                            if(achievement == null) {
+                                res.send({success: false, msg: "achievement not found "+req.body.achievementId}, 404);
+                                return;
+                            }
                             if(typeof team.achievements == "undefined")
                                 team.achievements = [];
 
-                            var found = false;
                             for(var i in team.achievements)
-                                if(team.achievements[i].memberId == req.body.memberId)
-                                    found = true;
+                                if(team.achievements[i].achievementId == req.body.achievementId) {
+                                    res.send({success: false, msg: "achievement already added to this team"}, 400);
+                                    return;
+                                }
 
-                            if(!found)
-                                team.achievements.push({memberId: req.body.memberId});
-                            else
-                                res.send({success: false, msg: "achievement already added to this team"});
+                            team.achievements.push({achievementId: req.body.achievementId});
 
                             team.save(function(){
-                                res.send({success: true, data: { team: team, member: member }});
+                                res.send({success: true, data: team });
                             });
                         });
                 }

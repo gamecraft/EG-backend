@@ -94,7 +94,7 @@ module.exports = function(app, name) {
             options.limit = parseInt(req.query.limit);
         if(req.query.skip)
             options.skip = parseInt(req.query.skip);
-        
+
         deleteCommand(
             {
                 connection: app.set("dbconnection"),
