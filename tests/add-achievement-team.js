@@ -10,7 +10,7 @@ suite.discuss('When adding achievement to team')
     .del("/Achievement").expect(200).next()
     .post("/Team", {_id: "teamID", members: [], achievements: []})
         .expect(200).next()
-    .post("/Achievement", { _id: "achievementID", name: "testAchievement" })
+    .post("/Achievement", { _id: "achievementID", name: "testAchievement", pointsReward: 10 })
         .expect(200).next()
     .get("/Achievement/achievementID")
         .expect(200).next()
@@ -19,5 +19,6 @@ suite.discuss('When adding achievement to team')
         .expect('should respond with achievement added to the team', function(req, res, body) {
             var response = JSON.parse(body);
             assert.equal(response.data.achievements[0].achievementId, "achievementID");
+            assert.equal(response.data.totalPoints, 10);
         }).next()
 .export(module);

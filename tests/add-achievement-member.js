@@ -12,15 +12,16 @@ suite.discuss('When adding achievement to member')
         .expect(200).next()
     .post("/TeamMember", { _id: "memberID", name: "testMember", achievements: [], teamId: "teamID" })
         .expect(200).next()
-    .post("/Achievement", { _id: "achievementID", name: "testAchievement" })
+    .post("/Achievement", { _id: "achievementID", name: "testAchievement", pointsReward: 10 })
         .expect(200).next()
     .get("/Achievement/achievementID")
         .expect(200).next()
     .put("/TeamMember/memberID/achievement", { achievementId: 'achievementID' })
         .expect(200)
-        .expect('should respond with achievement  added to the member', function(req, res, body) {
+        .expect('should respond with achievement added to the member', function(req, res, body) {
             var response = JSON.parse(body);
             assert.equal(response.data.achievements[0].achievementId, "achievementID");
+            assert.equal(response.data.points, 10);
         }).next()
     .put("/TeamMember/memberID/achievement", { achievementId: 'achievementID' })
         .expect(400)
@@ -29,5 +30,6 @@ suite.discuss('When adding achievement to member')
         .expect("should contain achievementID", function(req, res, body) {
             var response = JSON.parse(body);
             assert.equal(response.data.achievements[0].achievementId, "achievementID");            
+            assert.equal(response.data.totalPoints, 10);
         })
 .export(module);

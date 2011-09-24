@@ -27,7 +27,7 @@
 ## Team ##
     {
         _id: "",
-        name: ""
+        name: "",
         totalPoints: 0,
         skills: [                   // contains also all skills of members and their avgLevel per members having that skill.
             {
@@ -39,6 +39,15 @@
         achievements: [             // contains also all achievements of members
             {
                 achievementId: ""
+            },
+            ...
+        ],
+        finishedPhases: [           // in order of finished Phase, a snapshot of current totalPoints and jury's points awards
+            {
+                phaseId: "",
+                name: "",
+                totalPoints: 0,
+                juryPoints: 0
             },
             ...
         ],
@@ -73,6 +82,7 @@
     {
         _id: "",
         name: "",
+        active: false,
         duration: <number in miliseconds>,
         orderIndex: <number from 0 to X>,
         createdAt: "2011-09-18T22:26:09.506Z",

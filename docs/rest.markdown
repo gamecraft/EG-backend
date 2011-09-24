@@ -1,6 +1,11 @@
 # helper methods #
 ## mark Phase as finished ##
+Will record the current value of every Team once the phase is fininesh in Team.finishedPhases array
+
     PUT <endpoint>/Phase/<Phase._id>/finished
+
+### response with status 200 ###
+    {success: true, data: [<Team>, <Team>, ...]}
     
 ## add Points to Team ##
 Simply adds given points to a team
