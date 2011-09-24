@@ -12,13 +12,13 @@ Simply adds given points to a team
     {success: true, data: <Team>}
 
 ## add Points to Member ##
-Simply adds given points to a member
+Simply adds given points to a member, this also adds given points to member's Team.totalPoints
 
     PUT <endpoint>/TeamMember/<TeamMember._id>/points
     BODY { points: <number> }
     
 ### response with status 200 ###
-    {success: true, data: <Team>}
+    {success: true, data: <TeamMember>}
 
 ## add TeamMember to Team ##
 Updates 'teamId' property of the TeamMember pointing to Team._id as well as 
