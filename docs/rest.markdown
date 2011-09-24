@@ -21,8 +21,7 @@ Simply adds given points to a member, this also adds given points to member's Te
     {success: true, data: <TeamMember>}
 
 ## add TeamMember to Team ##
-Updates 'teamId' property of the TeamMember pointing to Team._id as well as 
-appending TeamMemeber to Team.members collection
+Updates 'teamId' property of the TeamMember pointing to Team._id
 
     PUT <endpoint>/Team/<Team._id>/member
     BODY { memberId: "" }
