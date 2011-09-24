@@ -1,4 +1,15 @@
 # helper methods #
+## add Points to Team ##
+Simply adds given points to a team
+
+    PUT <endpoint>/Team/<Team._id>/points
+    BODY { points: <number> }
+
+## add Points to Member ##
+Simply adds given points to a member
+    PUT <endpoint>/TeamMember/<TeamMember._id>/points
+    BODY { points: <number> }
+
 ## add TeamMember to Team ##
 Updates 'teamId' property of the TeamMember pointing to Team._id as well as 
 appending TeamMemeber to Team.members collection
