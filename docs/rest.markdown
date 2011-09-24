@@ -13,6 +13,7 @@ Simply adds given points to a team
 
 ## add Points to Member ##
 Simply adds given points to a member
+
     PUT <endpoint>/TeamMember/<TeamMember._id>/points
     BODY { points: <number> }
     
