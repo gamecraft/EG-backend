@@ -9,6 +9,6 @@
         "optimist": "latest",
         "now": "latest",
         "mongodm": "http://github.com/ActiveUnits/mongodm/tarball/master",
-        "api-easy": "https://github.com/ActiveUnits/api-easy/tarball/master"
+        "api-easy": "latest"
     }
 }

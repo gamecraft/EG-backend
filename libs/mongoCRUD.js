@@ -85,7 +85,7 @@ module.exports = function(app, name) {
 
     app.del("/"+name+"/:id?", function(req, res, next) {
         // JSON decode query or spec
-		var spec = req.query.spec? JSON.parse(req.query.spec) : spec;
+		var spec = req.query.spec? JSON.parse(req.query.spec) : {};
         var options = req.query.options? JSON.parse(req.query.options) : {};
 
         if(req.params.id)
@@ -110,7 +110,7 @@ module.exports = function(app, name) {
 
     app.put("/"+name+"/:id?", function(req, res, next) {
          // JSON decode query or spec
-		var spec = req.query.spec? JSON.parse(req.query.spec) : spec;
+		var spec = req.query.spec? JSON.parse(req.query.spec) : {};
         var options = req.query.options? JSON.parse(req.query.options) : {};
 
         if(req.params.id)

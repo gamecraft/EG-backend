@@ -1,24 +1,80 @@
+var getObjectID = function(value){
+    if(/^[0-9a-fA-F]{24}$/.test(value))
+        return db.toMongoID(value);
+    else
+        return value;
+}
+
+exports.updateAvgLevel = function(req, team, skill, next) {
+    req.db.withCollection("TeamMember")
+        .find({teamId: getObjectID(team._id), }, function(err, members) {
+
+            var totalLevel = 0;
+            for(var i in members)
+                for(var levelIndex in members[i].skills)
+                    if(members[i].skills[levelIndex].skillId == skill._id.toString()) {
+                        totalLevel += members[i].skills[levelIndex].level;
+                    }
+            for(var i in team.skills)
+                if(team.skills[i].skillId == skill._id.toString())
+                    team.skills[i].totalLevel = totalLevel;
+
+            team.save(next);
+        });
+};
+
+exports.setSkill = function(req, teamId, skill, next) {
+    req.db.withDocument("Team")
+        .findOne({_id: getObjectID(teamId)}, function(err, team) {
+            if(typeof team.skills == "undefined")
+                team.skills = [];
+            var found = -1;
+            for(var i in team.skills) {
+                if(team.skills[i].skillId == skill._id.toString())
+                    found = i;
+            }
+            
+            if(found == -1) {
+                team.skills.push({skillId: skill._id.toString(), totalLevel: skill.level});
+                team.save(next);
+            }
+            else
+                exports.updateAvgLevel(req, team, skill, next)
+        });
+};
+
+exports.setAchievement = function(req, teamId, achievement, next) {
+    req.db.withDocument("Team")
+        .findOne({_id: getObjectID(teamId)}, function(err, team) {
+            if(typeof team.achievements == "undefined")
+                team.achievements = [];
+            var found = -1;
+            for(var i in team.achievements) {
+                if(team.achievements[i].achievementId == achievement._id.toString())
+                    found = i;
+            }
+            
+            if(found == -1) {
+                team.achievements.push({achievementId: achievement._id.toString()});
+                team.save(next);
+            } else
+                next();
+        });
+};
+
 exports.registerRoutes = function(app) {
+    
     // add member to team
     app.put("/Team/:id/member", function(req, res, next) {
-        var teamPattern = null;
-        if(/^[0-9a-fA-F]{24}$/.test(req.params.id))
-            teamPattern = {_id: db.toMongoID(req.params.id)};
-        else
-            teamPattern = {_id: req.params.id};
+        var teamPattern = {_id: getObjectID(req.params.id)};        
+        var memberPattern = {_id: getObjectID(req.body.memberId)};
 
-        var memberPattern = null;
-        if(/^[0-9a-fA-F]{24}$/.test(req.body.memberId))
-            memberPattern = {_id: db.toMongoID(req.body.memberId)};
-        else
-            memberPattern = {_id: req.body.memberId};
-
-        db.withDocument("Team")
+        req.db.withDocument("Team")
             .findOne(teamPattern, function(err, team){
                 if(team == null) {
                     res.send({success: false, msg: "team not found "+req.params.id}, 404);
                 } else {
-                    db.withDocument("TeamMember")
+                    req.db.withDocument("TeamMember")
                         .findOne(memberPattern, function(err, member){
                             if(typeof team.members == "undefined")
                                 team.members = [];
@@ -35,8 +91,42 @@ exports.registerRoutes = function(app) {
                                     team.save(function(){
                                         res.send({success: true, data: { team: team, member: member }});
                                     });
-                                else
+                                else {
                                     res.send({success: true, data: { team: team, member: member }});
+                                }
+                            });
+                        });
+                }
+            });
+    });
+
+    // add achievement to team
+    app.put("/Team/:id/achievement", function(req, res, next) {
+        var teamPattern = {_id: getObjectID(req.params.id)};        
+        var achievementPattern = {_id: getObjectID(req.body.achievementId)};
+
+        req.db.withDocument("Team")
+            .findOne(teamPattern, function(err, team){
+                if(team == null) {
+                    res.send({success: false, msg: "team not found "+req.params.id}, 404);
+                } else {
+                    req.db.withDocument("Achievement")
+                        .findOne(achievementPattern, function(err, member){
+                            if(typeof team.achievements == "undefined")
+                                team.achievements = [];
+
+                            var found = false;
+                            for(var i in team.achievements)
+                                if(team.achievements[i].memberId == req.body.memberId)
+                                    found = true;
+
+                            if(!found)
+                                team.achievements.push({memberId: req.body.memberId});
+                            else
+                                res.send({success: false, msg: "achievement already added to this team"});
+
+                            team.save(function(){
+                                res.send({success: true, data: { team: team, member: member }});
                             });
                         });
                 }

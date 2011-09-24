@@ -29,14 +29,14 @@
         _id: "",
         name: ""
         totalPoints: 0,
-        skills: [
+        skills: [                   // contains also all skills of members and their avgLevel per members having that skill.
             {
                 skillId: "",
-                avgLevel: <number>,
+                totalLevel: <number>,
             },
             ...
         ],
-        achievements: [
+        achievements: [             // contains also all achievements of members
             {
                 achievementId: ""
             },
