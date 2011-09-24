@@ -72,6 +72,17 @@ exports.addPoints = function(req, teamId, value, next) {
         });
 }
 
+exports.recordFinishedPhase = function(req, team, phase, juryPoints, next) {
+    team.totalPoints += juryPoints;
+    team.finishedPhases.push({ 
+        phaseId: phase._id.toString(), 
+        totalPoints: team.totalPoints, 
+        juryPoints: juryPoints, 
+        name: phase.name
+    });
+    team.save(next);
+}
+
 exports.registerRoutes = function(app) {
     
     // add member to team

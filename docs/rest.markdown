@@ -1,8 +1,16 @@
 # helper methods #
 ## mark Phase as finished ##
-Will record the current value of every Team once the phase is fininesh in Team.finishedPhases array
+Will record the current value of every Team once the phase is finined in Team.finishedPhases array.
+This operation accepts array of { team, juryPoints } objects which indicate how many points are assigned to given Team
 
     PUT <endpoint>/Phase/<Phase._id>/finished
+    BODY [ 
+        { 
+            teamId: "", 
+            juryPoints: 0 
+        },
+        ... 
+    ]
 
 ### response with status 200 ###
     {success: true, data: [<Team>, <Team>, ...]}

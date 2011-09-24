@@ -10,19 +10,17 @@ exports.createDefaults = function(name) {
     }
 }
 
-exports.connect = function(app){
+exports.connect = function(app, documentPaths){
     var db = null;
     mongodm.withDatabase(app.set("dbname"), function(err, dbFacade){
         if(err) {
             console.log(err);
             return;
         }
-        dbFacade.synch(true).
-            defineDocument(require("../models/Team")).
-            defineDocument(require("../models/TeamMember")).
-            defineDocument(require("../models/Skill")).
-            defineDocument(require("../models/Achievement")).
-            end(function(){
+        var t = dbFacade.synch(true);
+        for(var i in documentPaths)
+            t.defineDocument(require("../"+documentPaths[i]));
+        t.end(function(){
                 console.log("Connected to MongoDB "+app.set("dbname"));
                 db = dbFacade;
             });

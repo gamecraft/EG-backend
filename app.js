@@ -4,7 +4,7 @@
  */
 
 var express = require('express');
-var mongo = require("./libs/mongoExpressConnect")
+var mongo = require("./libs/mongoExpressConnect");
 
 var app = module.exports = express.createServer();
 
@@ -18,11 +18,19 @@ var allowCrossDomain = function(req, res, next) {
     next();
 }
 
+var documentPaths = [
+    "./models/Achievement",
+    "./models/Phase",
+    "./models/Skill",
+    "./models/Team",
+    "./models/TeamMember"
+];
+
 app.configure('test', function(){
   app.set("dbname", "EDE-test");
   app.set("dbconnection", {host: "localhost", port: 27017});
   mongo.drop(app);
-  app.use(mongo.connect(app));
+  app.use(mongo.connect(app,documentPaths));
 
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
@@ -30,7 +38,7 @@ app.configure('test', function(){
 app.configure('development', function(){
   app.set("dbname", "EDE-dev");
   app.set("dbconnection", {host: "localhost", port: 27017});
-  app.use(mongo.connect(app));
+  app.use(mongo.connect(app,documentPaths));
 
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
@@ -38,7 +46,7 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.set("dbname", "EDE-prod");
   app.set("dbconnection", {host: "localhost", port: 27017});
-  app.use(mongo.connect(app));
+  app.use(mongo.connect(app,documentPaths));
 
   app.use(express.errorHandler()); 
 });
@@ -53,6 +61,7 @@ app.configure(function(){
 // Routes
 require("./controllers/TeamMember").registerRoutes(app);
 require("./controllers/Team").registerRoutes(app);
+require("./controllers/Phase").registerRoutes(app);
 
 var mongoCRUD = require("./libs/mongoCRUD");
 
