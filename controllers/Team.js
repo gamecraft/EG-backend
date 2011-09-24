@@ -8,7 +8,7 @@ var getObjectID = function(db, value){
 
 exports.updateTotalLevel = function(req, team, skill, next) {
     req.db.withCollection("TeamMember")
-        .find({teamId: getObjectID(req.db, team._id), }, function(err, members) {
+        .find({teamId: team._id.toString() }, function(err, members) {
 
             var totalLevel = 0;
             for(var i in members)
