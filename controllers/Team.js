@@ -104,9 +104,15 @@ exports.recordFinishedPhase = function(req, team, phase, juryPoints, next) {
 
 
 exports.resetAllFinishedPhases = function(req, next) {
+    var opt = { multi: true, safe: true };
+    var teamUpdate = {$set: { finishedPhases: [], totalPoints: 0, totalLevel: 0, skills: [], achievements: [] }};
+    var memberUpdate = {$set: { points: 0, skills: [], achievements: [] }};
     req.db.withCollection("Team")
-        .update({},{$set: { finishedPhases: [] }}, { multi: true, safe: true }, function(err, docs){
-            next(err, docs);
+        .update({}, teamUpdate, opt, function(err, docs){
+            req.db.withCollection("TeamMember")
+                .update({}, memberUpdate, opt, function(err, docs) {
+                    next(err, docs);
+                });
         });
 }
 
