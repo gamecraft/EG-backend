@@ -16,9 +16,12 @@ exports.registerRoutes = function(app) {
                     res.send({success: false, msg: "finish the current phase please"}, 400);
                     return;
                 }
+                var phasePattern = {_id: getObjectID(req.db, req.params.id)};
+                if(req.params.id == "next")
+                    phasePattern = {finished: false};
 
                 req.db.withDocument("Phase")
-                    .findOne({_id: getObjectID(req.db, req.params.id)}, function(err, phase){
+                    .findOne(phasePattern, function(err, phase){
                         if(phase == null) {
                             res.send({success: false, msg: "phase "+req.params.id+" not found"}, 404);
                             return;
@@ -39,9 +42,13 @@ exports.registerRoutes = function(app) {
                     res.send({success: false, msg: "there are "+docs.length+" phases active. Can not continue."}, 400);
                     return;
                 }
-
+                
+                var phasePattern = {_id: getObjectID(req.db, req.params.id)};
+                if(req.params.id == "current")
+                    phasePattern = {active: true};
+                    
                 req.db.withDocument("Phase")
-                    .findOne({_id: getObjectID(req.db, req.params.id)}, function(err, phase){
+                    .findOne(phasePattern, function(err, phase){
                         if(phase == null) {
                             res.send({success: false, msg: "phase "+req.params.id+" not found"}, 404);
                             return;
@@ -52,15 +59,17 @@ exports.registerRoutes = function(app) {
                         }
                 
                         phase.active = false;
+                        phase.finished = true;
                         phase.save(function(){
-                            var allCount = req.body.length;
-                            var handleRecord = function() {
-                                allCount -= 1;
-                                if(allCount == 0)
-                                    res.send({success: true, data: phase});
-                            };
                             req.db.withDocument("Team")
                                 .find({}, function(err, teams) {
+                                    var allCount = teams.length;
+                                    var handleRecord = function() {
+                                        allCount -= 1;
+                                        if(allCount == 0)
+                                            res.send({success: true, data: teams});
+                                    };
+                                    
                                     for(var i in teams) {
                                         var juryPoints = 0;
                                         for(var inputTeamIndex in req.body)

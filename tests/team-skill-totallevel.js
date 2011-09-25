@@ -39,7 +39,6 @@ suite.discuss('When testing totalLevel of a Team')
                 var teamSkills = {};
                 for(var i in response.data.skills)
                     teamSkills[response.data.skills[i].skillId] = response.data.skills[i];
-                console.log(teamSkills);
                 assert.equal(teamSkills.skillID1.totalLevel, 3);
                 assert.equal(teamSkills.skillID2.totalLevel, 6);
                 assert.equal(teamSkills.skillID.totalLevel, 20);
