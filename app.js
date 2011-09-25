@@ -79,5 +79,6 @@ mongoCRUD(app, "Achievement", mongo.createDefaults("Achievement"), onUpdate);
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-var nowjs = require("now");
-var everyone = nowjs.initialize(app);
+// global now and everyone accessible objects
+now = require("now");
+everyone = now.initialize(app);

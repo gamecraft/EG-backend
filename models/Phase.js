@@ -6,6 +6,7 @@ module.exports = {
             active: false,
             activatedAt: null,
             finished: false,
+            finishedAt: null,
             duration: 0,
             orderIndex: 0,
             teamScore : [],

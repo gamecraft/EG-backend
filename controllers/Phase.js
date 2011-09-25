@@ -48,6 +48,7 @@ exports.registerRoutes = function(app) {
                         phase.activatedAt = new Date();
                         phase.save(function(){
                             res.send({success: true, data: phase});
+                            everyone.now.handleEvent("phase.active.changed", { _id: phase._id.toString() });
                         });
                     });
             });
@@ -78,14 +79,17 @@ exports.registerRoutes = function(app) {
                 
                         phase.active = false;
                         phase.finished = true;
+                        phase.finishedAt = new Date();
                         phase.save(function(){
                             req.db.withDocument("Team")
                                 .find({}, function(err, teams) {
                                     var allCount = teams.length;
                                     var handleRecord = function() {
                                         allCount -= 1;
-                                        if(allCount == 0)
+                                        if(allCount == 0) {
                                             res.send({success: true, data: teams});
+                                            everyone.now.handleEvent("phase.finished.changed", { _id: phase._id.toString() });
+                                        }
                                     };
                                     
                                     for(var i in teams) {

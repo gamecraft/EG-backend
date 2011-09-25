@@ -86,6 +86,7 @@
         active: false,
         activatedAt: null,
         finished: false,
+        finishedAt: null,
         duration: 0,
         orderIndex: 0,
         createdAt: "2011-09-18T22:26:09.506Z",
