@@ -9,6 +9,29 @@ var getObjectID = function(db, value){
 
 exports.registerRoutes = function(app) {
 
+    app.put("/Phase/resetAll", function(req, res, next) {
+        req.db.withCollection("Phase")
+                .update(
+                {},
+                { $set: { active: false, finished: false, activatedAt: null, finishedAt: null } }, 
+                { multi: true, safe: true },
+                function(err, docs) {
+                    if(err) {
+                        res.send({ success: false, msg: "failed to reset all phases"}, 500);
+                        console.log(err);
+                        return;
+                    }
+                    teamCtrl.resetAllFinishedPhases(req, function(err, docs){
+                        if(err) {
+                            res.send({ success: false, msg: "failed to reset all phases"}, 500);
+                            console.log(err);
+                        }
+                        else
+                            res.send({ success: true });
+                    });
+                });
+    });
+
     app.get("/Phase/current", function(req, res, next) {
         req.db.withDocument("Phase")
             .findOne({active: true}, function(err, phase) {
@@ -48,6 +71,7 @@ exports.registerRoutes = function(app) {
                         phase.activatedAt = new Date();
                         phase.save(function(){
                             res.send({success: true, data: phase});
+                            if(typeof everyone.now.handleEvent != "undefined")
                             everyone.now.handleEvent("phase.active.changed", { _id: phase._id.toString() });
                         });
                     });
@@ -88,6 +112,7 @@ exports.registerRoutes = function(app) {
                                         allCount -= 1;
                                         if(allCount == 0) {
                                             res.send({success: true, data: teams});
+                                            if(typeof everyone.now.handleEvent != "undefined")
                                             everyone.now.handleEvent("phase.finished.changed", { _id: phase._id.toString() });
                                         }
                                     };

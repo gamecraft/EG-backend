@@ -30,6 +30,7 @@ exports.updateTotalLevel = function(req, team, skill, next) {
                 team.totalLevel += team.skills[i].totalLevel;
             }
             team.save(next);
+            if(typeof everyone.now.handleEvent != "undefined")
             everyone.now.handleEvent("team.totalLevel.changed", { _id: team._id.toString(), totalLevel: team.totalLevel });
         });
 };
@@ -50,6 +51,7 @@ exports.setSkill = function(req, teamId, skill, next) {
                 team.skills.push(teamSkill);
                 team.totalLevel += teamSkill.totalLevel;
                 team.save(next);
+                if(typeof everyone.now.handleEvent != "undefined")
                 everyone.now.handleEvent("team.totalLevel.changed", { _id: team._id.toString(), totalLevel: team.totalLevel });
             }
             else
@@ -72,6 +74,7 @@ exports.setAchievement = function(req, teamId, achievement, next) {
                 team.achievements.push({achievementId: achievement._id.toString()});
                 team.totalPoints += parseInt(achievement.teamPointsReward);
                 team.save(next);
+                if(typeof everyone.now.handleEvent != "undefined")
                 everyone.now.handleEvent("team.totalPoints.changed", { _id: team._id.toString(), totalPoints: team.totalPoints });
             } else
                 next();
@@ -83,6 +86,7 @@ exports.addPoints = function(req, teamId, value, next) {
         .findOne({_id: getObjectID(req.db, teamId)}, function(err, team) {
             team.totalPoints += parseInt(value);
             team.save(next);
+            if(typeof everyone.now.handleEvent != "undefined")
             everyone.now.handleEvent("team.totalPoints.changed", { _id: team._id.toString(), totalPoints: team.totalPoints });
         });
 }
@@ -96,6 +100,14 @@ exports.recordFinishedPhase = function(req, team, phase, juryPoints, next) {
         name: phase.name
     });
     team.save(next);
+}
+
+
+exports.resetAllFinishedPhases = function(req, next) {
+    req.db.withCollection("Team")
+        .update({},{$set: { finishedPhases: [] }}, { multi: true, safe: true }, function(err, docs){
+            next(err, docs);
+        });
 }
 
 exports.registerRoutes = function(app) {
@@ -156,6 +168,7 @@ exports.registerRoutes = function(app) {
 
                             team.save(function(){
                                 res.send({success: true, data: team });
+                                if(typeof everyone.now.handleEvent != "undefined")
                                 everyone.now.handleEvent("team.totalPoints.changed", 
                                             { _id: team._id.toString(), totalPoints: team.totalPoints });
                             });
@@ -174,6 +187,7 @@ exports.registerRoutes = function(app) {
                     team.totalPoints += parseInt(req.body.points);
                     team.save(function(){
                         res.send({success: true, data: team});
+                        if(typeof everyone.now.handleEvent != "undefined")
                         everyone.now.handleEvent("team.totalPoints.changed", { _id: team._id.toString(), totalPoints: team.totalPoints });
                     });
                 }
