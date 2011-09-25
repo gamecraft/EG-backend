@@ -16,7 +16,7 @@ If Phase._id is equal to "current" then current active Phase will be marked as f
 ### response with status 200 ###
     {success: true, data: [<Team>, <Team>, ...]}
     
-## start Phase ##
+## mark Phase as active ##
 Sets Phase as active. 
 If Phase._id is equal to "next", then next Phase will be set as active.
 
