@@ -113,7 +113,7 @@ exports.registerRoutes = function(app) {
                 if(member == null) {
                     res.send({success: false, msg: "member not found "+req.params.id}, 404);
                 } else {
-                    member.points += req.body.points;
+                    member.points += parseInt(req.body.points);
                     member.save(function(){
                         if(member.teamId != "")
                             teamCtrl.addPoints(req, member.teamId, req.body.points, function() {

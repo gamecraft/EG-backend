@@ -78,13 +78,13 @@ exports.setAchievement = function(req, teamId, achievement, next) {
 exports.addPoints = function(req, teamId, value, next) {
     req.db.withDocument("Team")
         .findOne({_id: getObjectID(req.db, teamId)}, function(err, team) {
-            team.totalPoints += value;
+            team.totalPoints += parseInt(value);
             team.save(next);
         });
 }
 
 exports.recordFinishedPhase = function(req, team, phase, juryPoints, next) {
-    team.totalPoints += juryPoints;
+    team.totalPoints += parseInt(juryPoints);
     team.finishedPhases.push({ 
         phaseId: phase._id.toString(), 
         totalPoints: team.totalPoints, 
@@ -165,7 +165,7 @@ exports.registerRoutes = function(app) {
                 if(team == null) {
                     res.send({success: false, msg: "team not found "+req.params.id}, 404);
                 } else {
-                    team.totalPoints += req.body.points;
+                    team.totalPoints += parseInt(req.body.points);
                     team.save(function(){
                         res.send({success: true, data: team});
                     });
