@@ -9,6 +9,21 @@ var getObjectID = function(db, value){
 
 exports.registerRoutes = function(app) {
 
+    app.get("/Phase/current", function(req, res, next) {
+        req.db.withDocument("Phase")
+            .findOne({active: true}, function(err, phase) {
+                if(phase == null) {
+                    res.send({success: false, msg: "could not find active phase"}, 404);
+                    return;
+                }
+                var phaseData = phase.toJSON();
+                phaseData.timeLeft = (new Date()).getTime()-phase.activatedAt.getTime()-phase.duration;
+                if(phaseData.timeLeft < 0)
+                    phaseData.timeLeft = 0;
+                res.send({success: true, data: phaseData});
+            });
+    });
+
     app.put("/Phase/:id/active", function(req, res, next) {
         req.db.withDocument("Phase")
             .find({active: true}, function(err, docs) {
@@ -28,6 +43,7 @@ exports.registerRoutes = function(app) {
                         }
 
                         phase.active = true;
+                        phase.activatedAt = new Date();
                         phase.save(function(){
                             res.send({success: true, data: phase});
                         });

@@ -4,6 +4,7 @@ module.exports = {
         fields: {
             name: "",
             active: false,
+            activatedAt: null,
             finished: false,
             duration: 0,
             orderIndex: 0,

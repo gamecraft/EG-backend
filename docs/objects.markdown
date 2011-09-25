@@ -84,6 +84,8 @@
         _id: "",
         name: "",
         active: false,
+        activatedAt: null,
+        finished: false,
         duration: 0,
         orderIndex: 0,
         createdAt: "2011-09-18T22:26:09.506Z",
