@@ -1,4 +1,12 @@
 # helper methods #
+## reset all phases ##
+Resets all phases and empties all Team.finishedPhases 
+
+    PUT <endpoint>/Phase/resetAll
+
+### response with status 200 ###
+    { success: true }
+
 ## get current Phase ##
 Returns current active Phase and inject _timeLeft_ property to the object with value 
 of time left for expiring the Phase in miliseconds.
