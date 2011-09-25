@@ -100,6 +100,8 @@ exports.recordFinishedPhase = function(req, team, phase, juryPoints, next) {
         name: phase.name
     });
     team.save(next);
+    if(typeof everyone.now.handleEvent != "undefined")
+    everyone.now.handleEvent("team.totalPoints.changed", { _id: team._id.toString(), totalPoints: team.totalPoints });
 }
 
 
