@@ -121,7 +121,7 @@ exports.registerRoutes = function(app) {
                                         var juryPoints = 0;
                                         for(var inputTeamIndex in req.body)
                                             if(req.body[inputTeamIndex].teamId == teams[i]._id.toString()) {
-                                                juryPoints = req.body[inputTeamIndex].juryPoints;
+                                                juryPoints = parseInt(req.body[inputTeamIndex].juryPoints);
                                                 break;
                                             }
 
