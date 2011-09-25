@@ -17,9 +17,11 @@ exports.registerRoutes = function(app) {
                     return;
                 }
                 var phaseData = phase.toJSON();
-                phaseData.timeLeft = (new Date()).getTime()-phase.activatedAt.getTime()-phase.duration;
-                if(phaseData.timeLeft < 0)
+                phaseData.timeLeft = (new Date()).getTime()-phase.activatedAt.getTime(); // time elpased
+                if(phase.duration - phaseData.timeLeft < 0) // more than duration
                     phaseData.timeLeft = 0;
+                else
+                    phaseData.timeLeft = phase.duration-phaseData.timeLeft; // there is still some time left
                 res.send({success: true, data: phaseData});
             });
     });
