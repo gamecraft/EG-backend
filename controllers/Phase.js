@@ -122,6 +122,8 @@ exports.registerRoutes = function(app) {
                                         for(var inputTeamIndex in req.body)
                                             if(req.body[inputTeamIndex].teamId == teams[i]._id.toString()) {
                                                 juryPoints = parseInt(req.body[inputTeamIndex].juryPoints);
+                                                if(isNaN(juryPoints))
+                                                    juryPoints = 0;
                                                 break;
                                             }
 
