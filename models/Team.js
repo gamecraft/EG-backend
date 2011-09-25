@@ -4,6 +4,7 @@ module.exports = {
         fields: {
             name: null,
             totalPoints: 0,
+            totalLevel: 0,
             skills: [],
             achievements: [],
             finishedPhases: [],

@@ -29,6 +29,7 @@
         _id: "",
         name: "",
         totalPoints: 0,
+        totalLevel: 0,
         skills: [                   // contains also all skills of members and their avgLevel per members having that skill.
             {
                 skillId: "",

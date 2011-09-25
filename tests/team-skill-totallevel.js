@@ -24,13 +24,13 @@ suite.discuss('When testing totalLevel of a Team')
             .expect(200).next()
         .get("/Team/teamID2")
             .expect(200).next()
-        .put("/TeamMember/memberID2/skill", { skillId: 'skillID2' })
-            .expect(200).next()
         .put("/TeamMember/memberID/skill", { skillId: 'skillID1' })
             .expect(200).next()
         .put("/TeamMember/memberID/skill", { skillId: 'skillID' })
             .expect(200).next()
         .put("/TeamMember/memberID2/skill", { skillId: 'skillID' })
+            .expect(200).next()
+        .put("/TeamMember/memberID2/skill", { skillId: 'skillID2' })
             .expect(200).next()
         .get("/Team/teamID")
             .expect(200)
@@ -39,8 +39,10 @@ suite.discuss('When testing totalLevel of a Team')
                 var teamSkills = {};
                 for(var i in response.data.skills)
                     teamSkills[response.data.skills[i].skillId] = response.data.skills[i];
-                assert.equal(teamSkills.skillID1.totalLevel, 2);
-                assert.equal(teamSkills.skillID2.totalLevel, 3);
-                assert.equal(teamSkills.skillID.totalLevel, 8);
+                console.log(teamSkills);
+                assert.equal(teamSkills.skillID1.totalLevel, 3);
+                assert.equal(teamSkills.skillID2.totalLevel, 6);
+                assert.equal(teamSkills.skillID.totalLevel, 20);
+                assert.equal(response.data.totalLevel, 29);
             }).next()
 .export(module);

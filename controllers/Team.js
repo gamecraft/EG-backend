@@ -6,20 +6,29 @@ var getObjectID = function(db, value){
         return value;
 }
 
+var fact = function(value) {
+    var sum = 0;
+    for(var i = 0; i<=value; i++)
+        sum += i;
+    return sum;
+}
+
 exports.updateTotalLevel = function(req, team, skill, next) {
     req.db.withCollection("TeamMember")
         .find({teamId: team._id.toString() }, function(err, members) {
 
             var totalLevel = 0;
             for(var i in members)
-                for(var levelIndex in members[i].skills)
-                    if(members[i].skills[levelIndex].skillId == skill._id.toString()) {
-                        totalLevel += members[i].skills[levelIndex].level;
-                    }
-            for(var i in team.skills)
+                for(var levelIndex in members[i].skills) {
+                    if(members[i].skills[levelIndex].skillId == skill._id.toString())
+                        totalLevel += fact(members[i].skills[levelIndex].level);
+                }
+            team.totalLevel = 0;
+            for(var i in team.skills) {
                 if(team.skills[i].skillId == skill._id.toString())
                     team.skills[i].totalLevel = totalLevel;
-
+                team.totalLevel += team.skills[i].totalLevel;
+            }
             team.save(next);
         });
 };
@@ -36,7 +45,9 @@ exports.setSkill = function(req, teamId, skill, next) {
             }
             
             if(found == -1) {
-                team.skills.push({skillId: skill._id.toString(), totalLevel: parseInt(skill.level)});
+                var teamSkill = {skillId: skill._id.toString(), totalLevel: fact(parseInt(skill.level))};
+                team.skills.push(teamSkill);
+                team.totalLevel += teamSkill.totalLevel;
                 team.save(next);
             }
             else
