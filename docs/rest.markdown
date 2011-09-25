@@ -1,4 +1,13 @@
 # helper methods #
+## get current Phase ##
+Returns current active Phase and inject _timeLeft_ property to the object with value 
+of time left for expiring the Phase in miliseconds.
+
+    GET <endpoint>/Phase/current
+
+### response with status 200 ###
+    {success: true, data: <Phase> }
+
 ## mark Phase as finished ##
 Will record the current value of every Team once the phase is finined in Team.finishedPhases array.
 This operation accepts array of { team, juryPoints } objects which indicate how many points are assigned to given Team
