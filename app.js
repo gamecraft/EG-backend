@@ -35,6 +35,15 @@ app.configure('test', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
+app.configure('ede', function(){
+  app.set("dbname", "EDE-dev");
+  app.set("dbconnection", {host: "localhost", port: 27017});
+  mongo.drop(app);
+  app.use(mongo.connect(app,documentPaths));
+
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+});
+
 app.configure('development', function(){
   app.set("dbname", "SEED-dev");
   app.set("dbconnection", {host: "localhost", port: 27017});
