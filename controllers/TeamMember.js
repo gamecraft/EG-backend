@@ -115,6 +115,9 @@ exports.registerRoutes = function(app) {
                 } else {
                     member.points += parseInt(req.body.points);
                     member.save(function(){
+                        if(typeof everyone.now.handleEvent != "undefined")
+                        everyone.now.handleEvent("member.points.changed", { _id: member._id.toString(), points: member.points });
+
                         if(member.teamId != "")
                             teamCtrl.addPoints(req, member.teamId, req.body.points, function() {
                                res.send({success: true, data: member}); 

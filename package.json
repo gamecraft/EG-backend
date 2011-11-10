@@ -5,10 +5,10 @@
     "dependencies": {
         "express": "2.4.6",
         "jade": ">= 0.0.1",
-        "mognodb-rest": "http://github.com/ActiveUnits/mongodb-rest/tarball/master",
         "optimist": "latest",
         "now": "latest",
-        "mongodm": "http://github.com/ActiveUnits/mongodm/tarball/master",
-        "api-easy": "latest"
+        "api-easy": "latest",
+        "mognodb-rest": "https://github.com/ActiveUnits/mongodb-rest/tarball/master",
+        "mongodm": "https://github.com/ActiveUnits/mongodm/tarball/master"
     }
 }

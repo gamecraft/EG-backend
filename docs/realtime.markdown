@@ -33,3 +33,12 @@ Dispatched when a Team.totalLevel has been changed
         _id: "",
         totalLevel: <number>
     }
+
+## member.points.changed ##
+Dispatched when a TeamMember.points has been changed
+
+### data ###
+    {
+        _id: "",
+        points: <number>
+    }

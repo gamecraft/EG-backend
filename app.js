@@ -27,7 +27,7 @@ var documentPaths = [
 ];
 
 app.configure('test', function(){
-  app.set("dbname", "EDE-test");
+  app.set("dbname", "SEED-test");
   app.set("dbconnection", {host: "localhost", port: 27017});
   mongo.drop(app);
   app.use(mongo.connect(app,documentPaths));
@@ -36,7 +36,7 @@ app.configure('test', function(){
 });
 
 app.configure('development', function(){
-  app.set("dbname", "EDE-dev");
+  app.set("dbname", "SEED-dev");
   app.set("dbconnection", {host: "localhost", port: 27017});
   app.use(mongo.connect(app,documentPaths));
 
@@ -44,7 +44,7 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-  app.set("dbname", "EDE-prod");
+  app.set("dbname", "SEED-prod");
   app.set("dbconnection", {host: "localhost", port: 27017});
   app.use(mongo.connect(app,documentPaths));
 
